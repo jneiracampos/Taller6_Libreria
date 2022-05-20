@@ -3,6 +3,7 @@ package uniandes.dpoo.taller1.interfaz;
 import java.awt.BorderLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -71,6 +72,16 @@ public class PanelCategorias extends JPanel implements ItemListener
 			cbbCategorias.addItem(categoria);
 		}
 	}
+	
+	public void actualizarCategoriasNuevas(ArrayList<Categoria> categoriasNuevas)
+	{
+		for (int i = 0; i < categoriasNuevas.size(); i++)
+		{
+			Categoria categoriaNueva = categoriasNuevas.get(i);
+			cbbCategorias.addItem(categoriaNueva);
+		}
+	}
+	
 
 	// ************************************************************************
 	// Métodos implementados de la interfaz ItemListener

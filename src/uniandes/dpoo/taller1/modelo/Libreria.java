@@ -30,6 +30,13 @@ public class Libreria
 	 * Una lista con los libros disponibles en la librería
 	 */
 	private ArrayList<Libro> catalogo;
+	
+	/**
+	 * El arreglo con las categorías nuevas
+	 */
+	
+	ArrayList<Categoria> listaCategoriasNuevas = new ArrayList<Categoria>();
+	HashMap<String, ArrayList<Libro>> librosCategoriasNuevas = new HashMap<String, ArrayList<Libro>>();
 
 	// ************************************************************************
 	// Constructores
@@ -75,6 +82,17 @@ public class Libreria
 	{
 		return catalogo;
 	}
+	
+	public HashMap<String, ArrayList<Libro>> darLibrosCategoriasNuevas()
+	{
+		return librosCategoriasNuevas;
+	}
+	
+	public ArrayList<Categoria> darListaCategoriasNuevas()
+	{
+		return listaCategoriasNuevas;
+	}
+
 
 	// ************************************************************************
 	// Otros métodos
@@ -105,7 +123,6 @@ public class Libreria
 
 			// Crear una nueva categoría y agregarla a la lista
 			listaCategorias.add(new Categoria(nombreCat, esFiccion));
-
 			linea = br.readLine();
 		}
 
@@ -136,9 +153,9 @@ public class Libreria
 	private ArrayList<Libro> cargarCatalogo(String nombreArchivoLibros) throws IOException
 	{
 		ArrayList<Libro> libros = new ArrayList<Libro>();
-
+		
 		BufferedReader br = new BufferedReader(new FileReader(nombreArchivoLibros));
-		String linea = br.readLine(); // Ignorar la primera línea porque tiene los títulos:
+		String linea = br.readLine(); 	// Ignorar la primera línea porque tiene los títulos:
 										// Titulo,Autor,Calificacion,Categoria,Portada,Ancho,Alto
 
 		linea = br.readLine();
@@ -150,6 +167,28 @@ public class Libreria
 			double laCalificacion = Double.parseDouble(partes[2]);
 			String nombreCategoria = partes[3];
 			Categoria laCategoria = buscarCategoria(nombreCategoria);
+			
+			//agregar nuevas categorias con sus respectivos libros al HashMap
+			if (laCategoria == null) {
+				if (librosCategoriasNuevas.containsKey(nombreCategoria)) {
+					Libro nuevo = new Libro(elTitulo, elAutor, laCalificacion, laCategoria);
+					for (int i = 0; i < listaCategoriasNuevas.size(); i++)
+					{
+						if (listaCategoriasNuevas.get(i).darNombre().equals(nombreCategoria))
+							laCategoria = listaCategoriasNuevas.get(i);
+					}
+					laCategoria.agregarLibro(nuevo);
+					librosCategoriasNuevas.put(nombreCategoria, laCategoria.darLibros());
+				}
+				else {
+					laCategoria = new Categoria(nombreCategoria, false);
+					listaCategoriasNuevas.add(laCategoria);
+					Libro nuevo = new Libro(elTitulo, elAutor, laCalificacion, laCategoria);
+					laCategoria.agregarLibro(nuevo);
+					librosCategoriasNuevas.put(nombreCategoria, laCategoria.darLibros());
+				}
+			}
+			
 			String archivoPortada = partes[4];
 			int ancho = Integer.parseInt(partes[5]);
 			int alto = Integer.parseInt(partes[6]);
@@ -424,5 +463,4 @@ public class Libreria
 
 		return hayAutorEnVariasCategorias;
 	}
-
 }

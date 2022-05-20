@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -171,6 +172,7 @@ public class InterfazLibreria extends JFrame
 		{
 			libreria = new Libreria(archivo_categorias.getPath(), archivo_libros.getPath());
 			panelCategorias.actualizarCategorias(libreria.darCategorias());
+			panelCategorias.actualizarCategoriasNuevas(libreria.darListaCategoriasNuevas());
 		}
 		catch (Exception e)
 		{
@@ -346,7 +348,25 @@ public class InterfazLibreria extends JFrame
 		}
 		JOptionPane.showMessageDialog(this, mensaje, "Consulta", JOptionPane.INFORMATION_MESSAGE);
 	}
-
+	
+	/**
+	 * Le informa al usuario las nuevas categorias que hay y cuantos libros hay en cada una
+	 * categoría.
+	 */
+	
+	public void cuantosLibrosCategoriasNuevas()
+	{
+		HashMap<String, ArrayList<Libro>> librosCategoriasNuevas = libreria.darLibrosCategoriasNuevas();
+		ArrayList<Categoria> listaCategoriasNuevas = libreria.darListaCategoriasNuevas();
+		String mensaje = "Las nuevas categorias con su respectivo numero de libros son: ";
+		for (int i = 0; i < listaCategoriasNuevas.size(); i++)
+		{
+			String nombreCategoria = listaCategoriasNuevas.get(i).darNombre();
+			mensaje += nombreCategoria + ": " + librosCategoriasNuevas.get(nombreCategoria).size() + " libros.";
+		}
+		JOptionPane.showMessageDialog(this, mensaje, "Categorias nuevas", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
 	// ************************************************************************
 	// Main
 	// ************************************************************************
