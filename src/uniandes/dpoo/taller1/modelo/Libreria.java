@@ -171,12 +171,12 @@ public class Libreria
 			//agregar nuevas categorias con sus respectivos libros al HashMap
 			if (laCategoria == null) {
 				if (librosCategoriasNuevas.containsKey(nombreCategoria)) {
-					Libro nuevo = new Libro(elTitulo, elAutor, laCalificacion, laCategoria);
 					for (int i = 0; i < listaCategoriasNuevas.size(); i++)
 					{
 						if (listaCategoriasNuevas.get(i).darNombre().equals(nombreCategoria))
 							laCategoria = listaCategoriasNuevas.get(i);
 					}
+					Libro nuevo = new Libro(elTitulo, elAutor, laCalificacion, laCategoria);
 					laCategoria.agregarLibro(nuevo);
 					librosCategoriasNuevas.put(nombreCategoria, laCategoria.darLibros());
 				}
